@@ -6,16 +6,36 @@ window.onload = function() {
     var $window = $(window);
 
     var targetNodeMapping = {};
-    lookupNode = function(target) {
-        return targetNodeMapping[target];
+    lookupNodeElement = function(target) {
+        if (targetNodeMapping.hasOwnProperty(target)) {
+            return targetNodeMapping[target];
+        }
+        console.error("invalid target lookup:", target);
+        return null;
     }
+
+    nodeInfo = {};
+    lookupNode = function(ident) {
+        if (nodeInfo.hasOwnProperty(ident)) {
+            return nodeInfo[ident];
+        }
+        console.error("invalid id lookup:", ident);
+        return null;
+    }
+
+    $.get("../analysis/tbontb.json", function(data) {
+        nodeInfo = data;
+    });
 
     var navigateTo = function(page) {
         window.open(page, "reader");
     };
 
+    var currentNode = null;
+
     var showNode = function(node) {
         node = $graph(node);
+        currentNode = node.attr("id");
         var where = node.offset();
         var size = node[0].getBBox();
         // BBox does not incorporate svg scaling, so need an extra divide by 2
@@ -40,18 +60,33 @@ window.onload = function() {
         });
     };
 
+    var readerLinkHandler = function(evt) {
+        var target = $(evt.target).attr("href");
+        // TODO: ugly hard-coded way to resolve the relative link
+        showNode(lookupNodeElement("tbontb/" + target));
+        return true;
+    }
+
+    var addImplicitLink = function() {
+        implicit = lookupNode(currentNode).implicit;
+        if (implicit != null) {
+            nextChapter = lookupNode(implicit).url;
+            var choiceDiv = $('<div class="center choice"></div>');
+            var link = $('<a href="' + nextChapter + '">» next page... «</a>').appendTo(choiceDiv);
+            link.click(readerLinkHandler);
+            $("#reader").contents().find("body").append(choiceDiv);
+        }
+    }
+
     var setupReader = function() {
         $("#reader").on("load", function() {
             $rdr = $("#reader").contents();
             // snoop on links to keep track of navigation
             $rdr.find("a").each(function(_, link) {
-                var target = $(link).attr("href");
-                $(link).click(function(evt) {
-                    // TODO: ugly hard-coded way to resolve the relative link
-                    showNode(lookupNode("tbontb/" + target));
-                    return true;
-                });
+                $(link).click(readerLinkHandler);
             });
+
+            addImplicitLink();
         });
     };
 
@@ -81,6 +116,7 @@ window.onload = function() {
         setupReader();
         setTimeout(function() {
             showNode("#start");
+            addImplicitLink();
         }, 0);
     });
 }
