@@ -72,7 +72,7 @@ window.onload = function() {
         if (implicit != null) {
             nextChapter = lookupNode(implicit).url;
             var choiceDiv = $('<div class="center choice"></div>');
-            var link = $('<a href="' + nextChapter + '">» next page... «</a>').appendTo(choiceDiv);
+            var link = $('<a href="' + nextChapter + '">&#187; next page... &#171;</a>').appendTo(choiceDiv);
             link.click(readerLinkHandler);
             $("#reader").contents().find("body").append(choiceDiv);
         }
