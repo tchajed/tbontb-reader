@@ -23,7 +23,7 @@ window.onload = function() {
         return null;
     }
 
-    $.get("../analysis/tbontb.json", function(data) {
+    $.get("resources/tbontb.json", function(data) {
         nodeInfo = data;
     });
 
@@ -94,7 +94,7 @@ window.onload = function() {
         // Add stylesheet to SVG
         var svg = graph.contentDocument;
         var link = svg.createElementNS("http://www.w3.org/1999/xhtml", "link");
-        link.setAttribute("href", "../reader/svg.css");
+        link.setAttribute("href", "../svg.css");
         link.setAttribute("rel", "stylesheet");
         svg.rootElement.appendChild(link);
         link.onload = function() {
