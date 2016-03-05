@@ -1,4 +1,4 @@
-window.onload = function() {
+$(window).on('load', function() {
     // global for debugging
     $graph = function(sel) {
         return $(sel, graph.contentDocument);
@@ -61,7 +61,7 @@ window.onload = function() {
     };
 
     var readerLinkHandler = function(evt) {
-        var target = $(evt.target).attr("href");
+        var target = $(this).attr("href");
         // TODO: ugly hard-coded way to resolve the relative link
         showNode(lookupNodeElement("tbontb/" + target));
         return true;
@@ -119,4 +119,4 @@ window.onload = function() {
             addImplicitLink();
         }, 0);
     });
-}
+});
