@@ -1,4 +1,4 @@
 - [x] support #anchor to save state in reader
 - [x] prevent scrolling graph in reader iframe
 - [ ] breadcrumbs (esp on SVG nodes)
-- [ ] click-drag scroll
+- [x] click-drag scroll

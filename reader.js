@@ -9,6 +9,11 @@ $(window).on('load', function() {
         }
     });
 
+    // SVG scrolling
+    svgPanZoom('#graph', {
+        zoomEnabled: true,
+    });
+
     // global for debugging
     $graph = function(sel) {
         return $(sel, graph.contentDocument);
