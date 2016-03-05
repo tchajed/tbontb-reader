@@ -119,18 +119,39 @@ $(window).on('load', function() {
         }
     };
 
+    var hashNodeIdent = function() {
+        var nodeName = window.location.hash.substring(1);
+        if (isIdentValid(nodeName)) {
+            return nodeName;
+        }
+        return null;
+    }
+
+    // terribly confusing function
+    var showAndNavigateTo = function(ident) {
+        showNode(lookupNodeElementById(ident));
+        navigateTo("resources/tbontb/" + lookupNode(ident).url);
+    }
+
     setupSvg(function() {
         setupNodes();
         setupReader();
         setTimeout(function() {
-            var nodeName = window.location.hash.substring(1);
-            if (isIdentValid(nodeName)) {
-                showNode(lookupNodeElementById(nodeName));
-                navigateTo("resources/tbontb/" + lookupNode(nodeName).url);
+            var nodeName = hashNodeIdent();
+            if (nodeName) {
+                showAndNavigateTo(nodeName);
             } else {
                 showNode("#start");
             }
             addImplicitLink();
         }, 0);
     });
+
+    $(window).on('hashchange', function() {
+        var nodeName = hashNodeIdent();
+        if (nodeName) {
+            showAndNavigateTo(nodeName);
+        }
+    });
+
 });
