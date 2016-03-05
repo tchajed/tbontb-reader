@@ -15,12 +15,19 @@ $(window).on('load', function() {
     }
 
     nodeInfo = {};
+    var isIdentValid = function(ident) {
+        return nodeInfo.hasOwnProperty(ident);
+    }
     lookupNode = function(ident) {
-        if (nodeInfo.hasOwnProperty(ident)) {
+        if (isIdentValid(ident)) {
             return nodeInfo[ident];
         }
         console.error("invalid id lookup:", ident);
         return null;
+    }
+
+    lookupNodeElementById = function(ident) {
+        return $graph(".node#" + ident)[0];
     }
 
     $.get("resources/tbontb.json", function(data) {
@@ -36,6 +43,7 @@ $(window).on('load', function() {
     var showNode = function(node) {
         node = $graph(node);
         currentNode = node.attr("id");
+        window.location.hash = currentNode;
         var where = node.offset();
         var size = node[0].getBBox();
         // BBox does not incorporate svg scaling, so need an extra divide by 2
@@ -115,7 +123,13 @@ $(window).on('load', function() {
         setupNodes();
         setupReader();
         setTimeout(function() {
-            showNode("#start");
+            var nodeName = window.location.hash.substring(1);
+            if (isIdentValid(nodeName)) {
+                showNode(lookupNodeElementById(nodeName));
+                navigateTo("resources/tbontb/" + lookupNode(nodeName).url);
+            } else {
+                showNode("#start");
+            }
             addImplicitLink();
         }, 0);
     });
