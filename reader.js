@@ -54,13 +54,11 @@ $(window).on('load', function() {
         node = $graph(node);
         currentNode = node.attr("id");
         window.location.hash = currentNode;
-        var where = node.offset();
-        var size = node[0].getBBox();
-        // BBox does not incorporate svg scaling, so need an extra divide by 2
+        var where = node[0].getBoundingClientRect();
         // need to use half window width, since right half is covered
         // use height/4 so node is a little higher
-        $window.scrollLeft(where.left + size.width/2/2 - $window.width()/2/2);
-        $window.scrollTop(where.top + size.height/2/2 - $window.height()/4);
+        $window.scrollLeft(where.left + where.width/2 - $window.width()/2/2);
+        $window.scrollTop(where.top + where.height/2 - $window.height()/4);
         $graph(".current").removeClass("current");
         node.addClass("current");
     }
@@ -154,7 +152,7 @@ $(window).on('load', function() {
                 showNode("#start");
             }
             addImplicitLink();
-        }, 0);
+        }, 100);
     });
 
     $(window).on('hashchange', function() {
