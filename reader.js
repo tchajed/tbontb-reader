@@ -11,7 +11,7 @@ $(window).on('load', function() {
 
     // SVG scrolling
     svgPanZoom('#graph', {
-        zoomEnabled: true,
+        zoomEnabled: false,
     });
 
     // global for debugging
