@@ -1,4 +1,14 @@
+
 $(window).on('load', function() {
+    // don't scroll graph when over reader
+    // http://stackoverflow.com/questions/30486787/prevent-parent-page-from-scrolling-when-mouse-is-over-embedded-iframe
+    reader = $("#reader")[0];
+    $("body").bind("mousewheel DOMMouseScroll", function(evt) {
+        if (evt.target === reader) {
+            evt.preventDefault();
+        }
+    });
+
     // global for debugging
     $graph = function(sel) {
         return $(sel, graph.contentDocument);
