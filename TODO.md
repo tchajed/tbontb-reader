@@ -1,0 +1,3 @@
+- [x] support #anchor to save state in reader
+- [ ] breadcrumbs (esp on SVG nodes)
+- [ ] click-drag scroll
