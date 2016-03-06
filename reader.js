@@ -2,11 +2,9 @@
 $(window).on('load', function() {
     // don't scroll graph when over reader
     // http://stackoverflow.com/questions/30486787/prevent-parent-page-from-scrolling-when-mouse-is-over-embedded-iframe
-    reader = $("#reader")[0];
-    $("body").bind("mousewheel DOMMouseScroll", function(evt) {
-        if (evt.target === reader) {
-            evt.preventDefault();
-        }
+    // (simplified to bind to the appropriate element rather than check the target)
+    $("#reader").on("wheel", function(evt) {
+        evt.preventDefault();
     });
 
     // SVG scrolling
