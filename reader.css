@@ -1,3 +1,7 @@
+body {
+    background-color: #333333;
+}
+
 #reader {
     position: fixed;
     top: 0px;
